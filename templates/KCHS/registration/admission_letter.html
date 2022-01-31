@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Admission Letter</title>
+<style>
+    @page {
+        size: a4 portrait;
+        backimg="{{logo.logo.path}}";
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content;
+            left: 50pt; width: 512pt; top: 50pt; height: 70pt;
+        }
+
+        @frame content_frame {          /* Content Frame */
+            left: 50pt; width: 512pt; top: 120pt; height: 632pt;
+        }
+
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content;
+            left: 50pt; width: 512pt; top: 772pt; height: 20pt;
+        }
+
+        @frame footer_frame {           /* Stump */
+            -pdf-frame-content: img;
+            left: 110px; top: 637pt;
+        }
+        @frame footer_frame {           /* signature */
+            -pdf-frame-content: sign;
+            left: 60px; top: 649pt;
+        }
+         @frame footer_content_page_number {           /* Another static Frame */
+            -pdf-frame-content: footer_content_page_number;
+            left: 50pt; width: 512pt; top: 800pt; height: 20pt;
+        }
+
+    }
+
+    .text-size-18
+    {
+       font-size: 20px;
+       font-weight: bolder;
+    }
+    body
+    {
+    	font-size: 12px;
+       	font-family: "Times New Roman", Times, serif;
+       	line-height:4px;
+    }
+
+.small {
+    font-size: 10px;
+  }
+  .mediam {
+    font-size: 12px;
+
+  }
+  .width10 {
+    width: 7%;
+  }
+  .width40 {
+    width: 18%;
+    font-size: 9px;
+  }
+   .width5 {
+    width: 2%;
+  }
+
+
+    body .p{
+    	font-size: 15px;
+    	line-height: 28px;
+    }
+
+    body .address{
+    	font-size: 12px;
+    	line-height: 20px;
+    }
+
+
+            table {
+                table-layout: fixed;
+                width: 100%;
+                border: 1px solid black;
+            }
+
+            table th {
+                text-align: left;
+                padding: 3px;
+                padding-bottom: 0;
+            }
+
+            table td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 3px;
+                padding-bottom: 0;
+            }
+
+</style>
+</head>
+<body>
+<!-- Content for Static Frame 'header_frame' -->
+<center>
+	<div id="header_content">
+		<img src="{{logo.logo.path}}" height="150px" width="170px" >
+	</div>
+</center>
+
+<!-- Content for Static Frame 'footer_frame' -->
+<center>
+	<div id="footer_content">
+		kahama college of Health Science
+	</div>
+</center>
+
+<div>
+	<div>
+		<!-- start section for header and mzumbe logo-->
+		<section class="header">
+			<center>
+				<h3 style="line-height: 0">KAHAMA COLLEGE OF HEALTH SCIENCE</h3>
+				<h5 style="line-height: 0">(INTELLIGENCE AND CHARACTER)</h5>
+			</center>
+		</section>
+		<!-- end section for header and mzumbe logo-->
+	</div>
+
+<!--address-->
+	<div style="font-size: 10px">
+		<hr style="height: 3px; background-color: black;">
+
+		<pre><b>Tel: +255766640531, </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  <span class="separator"><b>P.O BOX 424,</b></span></pre>
+		<pre><b>Tel: +255683170921&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  </b><span><b>KAHAMA</b></span></pre>
+		<pre><b>website: www.kachs.ac.tz</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<span><b>SHINYANGA </b></span></pre>
+
+
+
+	</div>
+	<center>
+	<h1><u><b>SELECTED STUDENT 2022</b></u></h1></center>
+	 <table>
+		 <tr>
+			 <th width="5%" style="padding:3px">S/N</th>
+			 <th width="15%" style="padding:3px">Reg#</th>
+			 <th style="padding:3px">Names</th>
+			 <th width="4%" style="padding:3px">sex</th>
+			 <th width="10%" style="padding:3px">Phone</th>
+			 <th style="padding:3px">Programme</th>
+			 <th width="12%" style="padding:3px">Entry Level</th>
+		 </tr>
+		 {% for z in registration %}
+		  <tr>
+			  <td class="small" style="padding:3px">{{forloop.counter}}</td>
+			  <td style="padding:3px">{{z.student.user}}-2025</td>
+			  <td style="padding:3px">{{z.student.user.first_name|upper}} {{zstudent.user.middle_name|upper}} {{z.student.user.last_name|upper}}</td>
+			  <td class="small" style="padding:3px">{{z.student.user.sex}} </td>
+			  <td style="padding:3px">{{z.student.user.phone}} </td>
+			  <td style="padding:3px">{{z.student.programme}}</td>
+			  <td style="padding:3px">{{z.student.entry_level}} </td>
+		  </tr>
+		 {% endfor %}
+	 </table>
+</div>
+<center>
+	<div id="footer_content_page_number">
+		Page <pdf:pagenumber> of <pdf:pagecount>
+	</div>
+</center>
+</body>
+</html>

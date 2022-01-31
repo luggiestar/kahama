@@ -1,0 +1,817 @@
+{% load i18n static adminlte_options adminlte_menu %}<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
+{% get_adminlte_settings as adminlte %}
+{% get_adminlte_option 'site_logo' as adminlte_site_logo  %}
+
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+
+<head>
+
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <!--<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">-->
+    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href={% static "admin/ionicons/ionicons.min.css" %}>
+
+    {% block extrastyle %} {% endblock %}
+
+    {% block extrahead %} {% endblock %}
+    <!-- Theme style -->
+    <link rel="stylesheet" href="{% static 'admin/dist/css/AdminLTE.css' %}">
+     <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" crossorigin="anonymous">
+
+<!-- Load font awesome icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+
+
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    {% if adminlte.skin %}
+    <link rel="stylesheet" href={% static "admin/dist/css/skins/skin-"|add:adminlte.skin|add:".min.css" %}>
+    {% else %}
+    <link rel="stylesheet" href={% static "admin/dist/css/skins/_all-skins.css" %}>
+    {% endif %}
+
+    <link rel="stylesheet" href={% static "admin/dist/css/django.css" %}>
+    {% if adminlte_site_logo.valid %}
+    <link rel="apple-touch-icon" href="{% static 'img/MKUU.png'%}">
+    <link rel="icon" href="{% static 'img/MKUU.png'%}">
+    {% else %}
+    <link rel="apple-touch-icon" href="{% static "admin/dist/img/default-log.svg" %}">
+    <link rel="icon" href="{% static 'img/MKUU.png'%}">
+    {% endif %}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style>
+
+.kh-text{
+    color: #d17c00;
+}
+
+.skin-green .main-header .navbar .sidebar-toggle {
+    color: #d17c00;
+}
+.skin-green .sidebar-menu > li > .treeview-menu {
+    margin: 0 1px;
+    background: #08252a;
+}
+
+.skin-green .sidebar-menu > li:hover > a, .skin-green .sidebar-menu > li.active > a {
+    color: #ffffff;
+    background: #092b32;
+    border-left-color: #114e5a;
+}
+.item {
+  position: sticky;
+  margin-top: 2px;
+  margin-left: 300px;
+}
+
+.comment-btn {
+  top: 0;
+  align-self: flex-end
+}
+@media only screen and (max-width: 768px) {
+    .item {
+        position: sticky;
+        margin-top: -10px;
+        margin-left: 200px;
+    }
+
+    .comment-btn {
+        top: 0;
+        align-self: flex-end
+    }
+}
+.item {
+    transform: rotate(-90deg);
+
+    /* Safari */
+    -webkit-transform: rotate(-90deg);
+
+    /* Firefox */
+    -moz-transform: rotate(-90deg);
+
+    /* IE */
+    -ms-transform: rotate(-90deg);
+
+    /* Opera */
+    -o-transform: rotate(-90deg);
+
+   /* Internet Explorer */
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+
+    position: -webkit-sticky;
+    position: fixed;
+    top: 0;
+    margin-left: 122.5rem;
+    margin-top: 30rem;
+    width: 20rem;
+    padding:12px;
+}
+
+.comment-btn {
+  top: 0;
+  align-self: flex-end
+}
+
+@media only screen and (max-width: 768px) {
+    .item {
+        position: sticky;
+        margin-top: -10px;
+        margin-left: 200px;
+    }
+
+    .comment-btn {
+        top: 0;
+        align-self: flex-end
+    }
+}
+
+@media only screen and (max-width: 413px) {
+    .item {
+        transform: rotate(-90deg);
+
+        /* Safari */
+        -webkit-transform: rotate(-90deg);
+
+        /* Firefox */
+        -moz-transform: rotate(-90deg);
+
+        /* IE */
+        -ms-transform: rotate(-90deg);
+
+        /* Opera */
+        -o-transform: rotate(-90deg);
+
+        /* Internet Explorer */
+        position: -webkit-sticky;
+        position: fixed;
+        top: 0;
+        margin-left: 20rem;
+        margin-top: 30rem;
+        width: 20rem;
+        padding:4px;
+    }
+
+    .comment-btn {
+        position: fixed;
+        top: 0;
+
+    }
+    .logo-lg b{
+    font-size: 12px;
+  }
+}
+
+
+@media only screen and (min-width: 423px) and (max-width: 600px){
+     .item {
+        transform: rotate(-90deg);
+
+        /* Safari */
+        -webkit-transform: rotate(-90deg);
+
+        /* Firefox */
+        -moz-transform: rotate(-90deg);
+
+        /* IE */
+        -ms-transform: rotate(-90deg);
+
+        /* Opera */
+        -o-transform: rotate(-90deg);
+
+        /* Internet Explorer */
+        position: -webkit-sticky;
+        position: fixed;
+        top: 0;
+        margin-left: 24.4rem;
+        margin-top: 31rem;
+        width: 20rem;
+        padding:6px;
+        border-radius: 6px;
+        transition-delay: 2s;
+        transition: ease 1s;
+    }
+    .mobile a{
+        width: auto;
+        font-size: 10px;
+    }
+    .mobile{
+      margin-left: 50px
+    }
+    .confirm-field{
+        margin-left: -10px;
+    }
+    .logbook-attendance-mobile{
+        font-size: 18px;
+    }
+    .comment-btn {
+        position: fixed;
+        top: 0;
+
+    }
+
+    /*header and log*/
+    .logo-lg b{
+        font-size: 12px;
+  }
+
+@media only screen and (min-width: 1500px){
+     .item {
+        transform: rotate(-90deg);
+
+        /* Safari */
+        -webkit-transform: rotate(-90deg);
+
+        /* Firefox */
+        -moz-transform: rotate(-90deg);
+
+        /* IE */
+        -ms-transform: rotate(-90deg);
+
+        /* Opera */
+        -o-transform: rotate(-90deg);
+
+        /* Internet Explorer */
+        position: -webkit-sticky;
+        position: fixed;
+        top: 0;
+        margin-left: 100.4rem;
+        margin-top: 31rem;
+        width: 20rem;
+        padding:6px;
+        border-radius: 6px;
+        transition-delay: 2s;
+        transition: ease 1s;
+    }
+    .mobile a{
+        width: auto;
+        font-size: 10px;
+    }
+    .mobile{
+      margin-left: 50px
+    }
+    .confirm-field{
+        margin-left: -10px;
+    }
+    .logbook-attendance-mobile{
+        font-size: 18px;
+    }
+    .comment-btn {
+        position: fixed;
+        top: 0;
+    }
+    .pta{
+        font-size:12px;
+    }
+}
+
+.skin-green .sidebar-menu > li.header {
+    color: #fff;
+    background: #00181c;
+}
+</style>
+
+</head>
+<body class="hold-transition skin-{% if adminlte.skin %}{{ adminlte.skin }}{% else %}green{% endif %} sidebar-mini fixed" >
+
+<div class="wrapper">
+    {% if not is_popup %}
+    <header class="main-header mu-bg">
+        <!-- Logo -->
+        <a href="#" class="logo" style="background: #00181c;>
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini " style="background: #00181c;>
+
+                <img src="{% static 'img/MKUU.png'%}" class="user-image" alt="User Image" style="width:45px;height:45px;padding:5px;">
+
+            </span>
+            <!-- logo for regular state and mobile devices -->
+
+            <span class="logo-lg " style="background: #00181c;">
+
+                <img src="{% static 'img/MKUU.png'%}" class="user-image" alt="User Image" style="width:45px;height:45px;padding:5px;">
+
+                <b class="kh-text">
+                    {% get_adminlte_option 'site_header' as adminlte_site_header  %}
+                    {% if adminlte_site_header.valid %}
+                    {{ adminlte_site_header.site_header }}
+                    {% else %}
+
+
+                        KAHCS (STUDENT RECORDS SYSTEM)
+
+                    {% endif %}
+                </b>
+            </span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+                {% block messages %}
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.tags == 'success' %}
+                <div class="alert mu-bg alert-dismissible  wow fadeInDown">
+                    <button type="button" class="close text-white" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times fa-sm" style="color:white"></i> </button>
+                    <h5><i class="icon fa fa-check"></i>{{ message|capfirst }}</h5>
+                </div>
+                {% elif message.tags == 'error' %}
+                <div class="alert alert-danger alert-dismissible  wow fadeInDown">
+                    <button type="button" class="close text-white" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times fa-sm" style="color:red"></i></button>
+                    <h5><i class="icon fa fa-ban"></i>{{ message|capfirst }}</h5>
+                </div>
+                {% elif message.tags == 'warning' %}
+                <div class="alert alert-warning alert-dismissible  wow fadeInDown">
+                    <button type="button" class="close text-white" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times fa-sm" style="color:red"></i></button>
+                    <h5><i class="icon fa fa-warning"></i>{{ message|capfirst }}</h5>
+                </div>
+                {% elif message.tags == 'info' %}
+                <div class="alert alert-info alert-dismissible  wow fadeInDown">
+                    <button type="button" class="close text-white" data-dismiss="alert" aria-hidden="true"><i class="fa fa-times fa-sm" style="color:red"></i></button>
+                    <h5><i class="icon fa fa-info"></i>{{ message|capfirst }}</h5>
+                </div>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endblock messages %}
+            <a href="#" class="sidebar-toggle white" data-toggle="offcanvas" >
+                <span class="h6" style="color: black"><b><i class="fa fa-user"></i> {{request.user.first_name}} {{request.user.middle_name}}. {{request.user.last_name}}<span style="color: #ada953"> ~ {{request.session.position|upper}}</span></b></span>
+            </a>
+
+
+            <div class="navbar-custom-menu" style="float: left;">
+                <ul class="nav navbar-nav top-menu">
+                    {% get_menu request 'top' as app_list %}
+                    {% if app_list %}
+                    {% for app in app_list %}
+                    <li class="dropdown user user-menu">
+                        <a href="{{ app.admin_url }}">
+                            <i class="fa {% if app.icon %} {{app.icon}} {% else %}fa-database{% endif %}"></i>
+                            {{ app.name }}</a>
+                    </li>
+                    {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {% get_adminlte_option 'show_avatar' as adminlte_show_avatar  %}
+                            {% if adminlte_show_avatar.valid and adminlte_show_avatar.show_avatar == 'on' %}
+                            {% get_adminlte_option 'avatar_field' request as adminlte_avatar_field  %}
+                            {% if adminlte_avatar_field.valid and adminlte_avatar_field.avatar_field %}
+                            <img src="{{ adminlte_avatar_field.avatar_field }}" class="user-image" alt="User Image" style="width: 25px; height:25px;">
+                            {% else %}
+                            <img src={% static "admin/dist/img/default.jpg" %} class="user-image" alt="User Image">
+                            {% endif %}
+                            {% endif %}
+                            <span class="hidden-xs mu-bg btn btn-sm mu-color "> <b> <i class="fa fa-power-off"> </i> </b></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            {% get_adminlte_option 'show_avatar' as adminlte_show_avatar  %}
+                            {% if adminlte_show_avatar.valid and adminlte_show_avatar.show_avatar == 'on' %}
+                            <li class="user-header">
+                                {% get_adminlte_option 'avatar_field' request as adminlte_avatar_field  %}
+                                {% if adminlte_avatar_field.valid and adminlte_avatar_field.avatar_field %}
+                                <img src="{{ adminlte_avatar_field.avatar_field }}" class="img-circle" alt="User Image" style="width: 90px; height:90px;">
+                                {% else %}
+                                <img src={% static "admin/dist/img/default.jpg" %} class="img-circle" alt="User Image">
+                                {% endif %}
+                                <p>
+                                    {{ request.user.first_name }}-{{ request.user.last_name }} -
+                                    {% if request.user.is_superuser %}
+                                    {{request.session.position}}
+
+                                    {% else %}
+                                    {% if request.user.groups.all %}
+                                    {% for i in request.user.groups.all %}{{ i.name }}{% endfor %}
+                                    {% else %}
+                                   {{request.session.position}}
+                                    {% endif %}
+                                    {% endif %}
+                                </p>
+                            </li>
+                            {% else %}
+                            <li class="user-header" style="height: auto;">
+                                <p>
+                                    {{ request.user.first_name }}-{{ request.user.last_name }} -
+                                    {% if request.user.is_superuser %}
+                                    {{request.session.position}}
+                                    {% else %}
+                                    {% if request.user.groups.all %}
+                                    {% for i in request.user.groups.all %}{{ i.name }}{% endfor %}
+                                    {% else %}
+                                    {{request.session.position}}
+                                    {% endif %}
+                                    {% endif %}
+                                </p>
+                            </li>
+                            {% endif %}
+<li class="user-footer">
+                                {% if request.user.is_staff %}
+                                <div class="pull-left">
+                                    <a  href="#" class="btn mu-bg btn-flat"><i class="fa fa-user"> </i> {% trans 'Person Profile' %}</a>
+                                </div>
+                                {% else %}
+                                <div class="pull-left">
+                                    <a  href="#" class="btn mu-bg btn-flat"><i class="fa fa-user"> </i> {% trans 'Person Profile' %}</a>
+                                </div>
+                                {% endif %}
+                                <div class="pull-right">
+                                    <a href="{% url 'KCHS:logout' %}" class="btn mu-bg-orange btn-flat">{% trans 'Logout' %}</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar " style="background: #00181c;">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            {% get_adminlte_option 'show_avatar' as adminlte_show_avatar  %}
+            {% if adminlte_show_avatar.valid and adminlte_show_avatar.show_avatar == 'on' %}
+            <div class="user-panel">
+                <div class="pull-left image">
+                    {% get_adminlte_option 'avatar_field' request as adminlte_avatar_field  %}
+                    {% if adminlte_avatar_field.valid and adminlte_avatar_field.avatar_field %}
+                    <img src="{{ adminlte_avatar_field.avatar_field }}" class="img-circle" alt="User Image">
+                    {% else %}
+                    <img src={% static "admin/dist/img/default.jpg" %} class="img-circle" alt="User Image">
+                    {% endif %}
+                </div>
+                <div class="pull-left info">
+                    <p>{{ request.user.username }}</p>
+                    <a href="#"><i class="fa fa-circle text-success"></i> {% trans "Online" %}</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu ">
+
+                <li class="header " style="background: #00181c"> {% trans 'or-tamisemi' %}</li>
+                {% if request.user.is_staff %}
+                <li>
+                    <a id="adminIndex" href="{% url 'admin:index' %}">
+                        <i class="fa fa-dashboard"></i> <span>{% trans 'Dashboard' %}</span>
+                    </a>
+                </li>
+                {% else %}
+                <li>
+                    <a id="adminIndex" href="#">
+                        <i class="fa fa-dashboard"></i> <span>{% trans 'Dashboard' %}</span>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if adminlte.main_navigation_app %}
+
+                {% get_menu request as app_list %}
+                {% if app_list %}
+                {% for app in app_list %}
+                {% if app.app_label == adminlte.main_navigation_app %}
+                {% for model in app.models %}
+                {% if model.admin_url %}
+                <li>
+                    <a href="{{ model.admin_url }}">
+                        <i class="fa {% if model.icon %} {{model.icon}} {% else %}fa-circle-o{% endif %}"></i> <span>{{ model.name }}</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+
+                {% endif %}
+
+                {% if adminlte.navigation_expanded %}
+
+                {% get_menu request as app_list %}
+                {% if app_list %}
+                {% for app in app_list %}
+                {% if not adminlte.show_apps or adminlte.show_apps and not app.app_label or app.app_label in adminlte.show_apps %}
+                {% if not app.app_label or app.app_label != adminlte.main_navigation_app %}
+                <li class="header">{{ app.name|upper }}</li>
+                {% for model in app.models %}
+                {% ifchanged %}
+                {% if model.admin_url %}
+
+                {% endif %}
+                {% endifchanged %}
+                {% endfor %}
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+
+                {% else %}
+
+                {% get_menu request as app_list %}
+                {% if app_list and  request.user.is_superuser %}
+                {% for app in app_list %}
+                {% if not adminlte.show_apps or adminlte.show_apps and not app.app_label or app.app_label in adminlte.show_apps %}
+                {% if not app.app_label or app.app_label != adminlte.main_navigation_app %}
+                <li {% if not app.admin_url %}class="treeview"{% endif %}>
+                    <a href="{% if app.admin_url %}{{app.admin_url}}{% else %}javascript:void(0){% endif %}">
+                        <i class="fa {% if app.icon %} {{app.icon}} {% else %}fa-folder{% endif %}"></i>
+                        <span style="overflow: hidden; display: inline-block; vertical-align:top;">{{ app.name }}</span>
+                        {% if not app.admin_url %}
+                        <span class="pull-right-container">
+                                  <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                        {% endif %}
+                    </a>
+                    {% if not app.admin_url %}
+                    <ul class="treeview-menu">
+                        {% for model in app.models %}
+                        {% if model.admin_url %}
+                        <li><a href="{{ model.admin_url }}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>{{ model.name }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </li>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% endif %}
+                {% if   request.user.is_staff  %}
+
+
+                <li {% if not app.admin_url %}class="treeview"{% endif %}>
+                    <a href="{% if app.admin_url %}{{app.admin_url}}{% else %}javascript:void(0){% endif %}">
+                        <i class="fa {% if app.icon %} {{app.icon}} {% else %}fa-sitemap{% endif %}"></i>
+                        <span style="overflow: hidden; display: inline-block; vertical-align:top;"> &nbsp;&nbsp;REGISTRATION</span>
+                        {% if not app.admin_url %}
+                        <span class="pull-right-container">
+                                  <i class="fa fa-angle-left  pull-right"></i></span>
+                        {% endif %}
+                    </a>
+                    {% if not app.admin_url %}
+                     <ul class="treeview-menu">
+                        <li><a href="{% url 'KCHS:registration_home' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Semester Registration</a></li>
+
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Available Schools</a></li>
+                    </ul>
+
+
+                    {% endif %}
+                </li>
+                <li {% if not app.admin_url %}class="treeview"{% endif %}>
+                    <a href="{% if app.admin_url %}{{app.admin_url}}{% else %}javascript:void(0){% endif %}">
+                        <i class="fa {% if app.icon %} {{app.icon}} {% else %}fa-cogs{% endif %}"></i>
+                        <span style="overflow: hidden; display: inline-block; vertical-align:top;"> &nbsp;&nbsp;SETTINGS</span>
+                        {% if not app.admin_url %}
+                        <span class="pull-right-container">
+                                  <i class="fa fa-angle-left  pull-right"></i></span>
+                        {% endif %}
+                    </a>
+                    {% if not app.admin_url %}
+
+                     <ul class="treeview-menu">
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>students Entry</a></li>
+                    </ul>
+
+                    {% endif %}
+                </li>
+
+                 <li {% if not app.admin_url %}class="treeview"{% endif %}>
+                    <a href="{% if app.admin_url %}{{app.admin_url}}{% else %}javascript:void(0){% endif %}">
+                        <i class="fas {% if app.icon %} {{app.icon}} {% else %}fa-book-reader{% endif %}"></i>
+                        <span style="overflow: hidden; display: inline-block; vertical-align:top;"> &nbsp;&nbsp;ACADEMIC</span>
+                        {% if not app.admin_url %}
+                        <span class="pull-right-container">
+                                  <i class="fa fa-angle-left pull-right"></i></span>
+                        {% endif %}
+                    </a>
+                    {% if not app.admin_url %}
+                    <ul class="treeview-menu">
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Programme Coordinator</a></li>
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Students Academic year</a></li>
+
+
+
+
+
+
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Academic Events</a></li>
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}fa-{% endif %}"></i>Teaching Workload</a></li>
+
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Courses</a></li>
+
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Combination</a></li>
+
+                    </ul>
+                    {% endif %}
+                </li>
+                 <li {% if not app.admin_url %}class="treeview"{% endif %}>
+                    <a href="{% if app.admin_url %}{{app.admin_url}}{% else %}javascript:void(0){% endif %}">
+                        <i class="fas {% if app.icon %} {{app.icon}} {% else %}fa-line-chart{% endif %}"></i>
+                        <span style="overflow: hidden; display: inline-block; vertical-align:top;"> &nbsp;&nbsp;FINANCE</span>
+                        {% if not app.admin_url %}
+                        <span class="pull-right-container">
+                                  <i class="fa fa-angle-left pull-right"></i></span>
+                        {% endif %}
+                    </a>
+                    {% if not app.admin_url %}
+                    <ul class="treeview-menu">
+                        <li><a href="{% url 'KCHS:programme_list' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Payment Structure</a></li>
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Financial Year Income</a></li>
+
+
+
+
+
+
+                        <li><a href="{#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Payment Item List</a></li>
+                        <li><a href="{% url 'KCHS:financial_year_debt' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}fa-{% endif %}"></i>Financial Year Debt</a></li>
+
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>subjects</a></li>
+
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Combination</a></li>
+
+                    </ul>
+                    {% endif %}
+                </li>
+             {#   {% if request.user|has_group:"Coordinator" %} #}
+                {% if request.user.is_staff %}
+
+                 <li {% if not app.admin_url %}class="treeview"{% endif %}>
+                    <a href="{% if app.admin_url %}{{app.admin_url}}{% else %}javascript:void(0){% endif %}">
+                        <i class="fas {% if app.icon %} {{app.icon}} {% else %}fa-layer-group{% endif %}"></i>
+                        <span style="overflow: hidden; display: inline-block; vertical-align:top;"> &nbsp;&nbsp;RESULTS</span>
+                        {% if not app.admin_url %}
+                        <span class="pull-right-container">
+                                  <i class="fa fa-angle-left pull-right"></i></span>
+                        {% endif %}
+                    </a>
+                    {% if not app.admin_url %}
+                    <ul class="treeview-menu">
+
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Academic Event results</a></li>
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Subject Assessment</a></li>
+                    </ul>
+
+
+                    {% endif %}
+                    {% endif %}
+                </li> {# {% endif %} #}
+
+                <li {% if not app.admin_url %}class="treeview"{% endif %}>
+                    <a href="{% if app.admin_url %}{{app.admin_url}}{% else %}javascript:void(0){% endif %}">
+                        <i class="fas {% if app.icon %} {{app.icon}} {% else %}fa-question-circle text-red{% endif %}"></i>
+                        <span style="overflow: hidden; display: inline-block; vertical-align:top;"> &nbsp;&nbsp;Help Desk</span>
+                        {% if not app.admin_url %}
+                        <span class="pull-right-container">
+                                  <i class="fa fa-angle-left pull-right"></i></span>
+                        {% endif %}
+                    </a>
+                    {% if not app.admin_url %}
+                    <ul class="treeview-menu">
+
+                        <li><a href="#" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}fa-phone text-danger{% endif %}"></i>Support- 0745034770</a></li>
+                                           <li ><a href="#"  class="text-danger"><i class="fas {% if model.icon %} {{model.icon}} {% else %}fa-phone {% endif %}"></i> System- 0755422199</a></li>
+
+                    </ul>
+
+
+                    {% endif %}
+                </li>
+
+                <li {% if not app.admin_url %}class="treeview"{% endif %}>
+                    <a href="{% url 'KCHS:logout' %}">
+                        <i class="fas {% if app.icon %} {{app.icon}} {% else %}fa-power-off{% endif %}"></i>
+                        <span style="overflow: hidden; display: inline-block; vertical-align:top;">Logouts</span>
+                    </a>
+
+                </li>
+                {% endif %}
+
+            </ul>
+        </section>
+    </aside>
+    {% endif %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" {% if is_popup %}style="margin-left:0px; padding-top: 0px;"{% endif %}>
+        <!-- Content Header (Page header) -->
+        <div class="d-sm-flex align-items-center justify-content-between mu-bg" style="width: 100%; height: 20px; background-size: cover; margin-top:0px;">
+        </div>
+        {% block page_content %}
+
+        {% endblock %}
+    </div>
+    <!-- /.content-wrapper -->
+    {% if not is_popup %}
+    <footer class="main-footer">
+
+        <div class="pull-right hidden-xs">
+            <b>Kahama College Of Health Science</b>
+        </div>
+        <strong>KACHS &copy; {% now 'Y' %} </strong> All rights reserved.
+    </footer>
+
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+    {% endif %}
+</div>
+<!-- ./wrapper -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.6 -->
+<script src={% static "admin/bootstrap/js/bootstrap.min.js" %}></script>
+<!-- Slimscroll -->
+
+<script src={% static "admin/plugins/slimScroll/jquery.slimscroll.min.js" %}></script>
+<!-- FastClick -->
+<script src={% static "admin/plugins/fastclick/fastclick.js" %}></script>
+<!-- AdminLTE App -->
+<script src={% static "admin/dist/js/app.min.js" %}></script>
+<!--wow js for animation-->
+<script src="{% static 'js/wow.min.js' %}"></script>
+<!--start wow js-->
+ <script>
+      new WOW().init();
+</script>
+<!-- AdminLTE for demo purposes -->
+{% if adminlte.demo %}
+<script src={% static "admin/dist/js/demo.js" %}></script>
+{% endif %}
+<script>
+// use js control active status of siderbar-menu
+$(function() {
+    var menuActions = document.querySelectorAll('.sidebar-menu a')
+    for (var i in menuActions) {
+        var pathname = document.querySelector('#adminIndex').pathname
+
+        try {
+            if (window.location.pathname === pathname) {
+                menuActions[i].parentNode.setAttribute('class', 'active')
+                break
+            }
+
+            if (window.location.href.indexOf(menuActions[i].href) !== -1) {
+                if (menuActions[i].href===window.location.origin + pathname) {
+                    continue
+                }
+                console.log('menu matched.', window.location.href, menuActions[i].href);
+                menuActions[i].parentNode.setAttribute('class', 'active');
+                if (menuActions[i].parentNode.parentNode.getAttribute('class') !== 'sidebar-menu') {
+                    menuActions[i].parentNode.parentNode.setAttribute('class', 'treeview-menu menu-open');
+                    menuActions[i].parentNode.parentNode.parentNode.setAttribute('class', 'treeview active');
+                }
+                break
+            }
+        } catch (e) {
+            console.log(window.location.href, menuActions[i].href, e)
+        }
+    }
+
+    var topMenuActions = document.querySelectorAll('.top-menu a')
+    for (var j in topMenuActions) {
+        if (window.location.href.indexOf(topMenuActions[j].href) !== -1) {
+            topMenuActions[j].parentNode.setAttribute('class', 'active');
+            console.log('top menu matched.', window.location.href, topMenuActions[j].href);
+        }
+    }
+
+
+})
+</script>
+
+{% block extrajs %}{% endblock %}
+
+</body>
+</html>

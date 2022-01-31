@@ -1,0 +1,1 @@
+web: gunicorn KAHAMA.wsgi --log-file -

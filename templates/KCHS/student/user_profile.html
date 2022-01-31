@@ -1,0 +1,176 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "admin/dist/css/app.css" %}">
+{% endblock %}
+{% block userlinks %}{% url 'django-admindocs-docroot' as docsroot %}{% if docsroot %}<a href="{{ docsroot }}">{% trans 'Documentation' %}</a> / {% endif %} {% trans 'Change password' %} / <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> {% trans 'Home' %}</a></li>
+    <li class="active">{% trans 'User Profile' %}</li>
+</ol>
+{% endblock %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block content_title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-primary">
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel">
+                            <div class="panel-body">
+                                <center>
+                                    <img src="{% static 'img/user.png' %}" width="70%" class="img-circle">
+                                </center>
+                                <h4 class="text-center">
+                                    <b>
+                                    {{request.user.first_name}} 
+                                    {{request.session.middle_name}}
+                                    {{request.user.last_name}}
+                                    </b>
+                                </h4>
+                                {% if request.user.is_active %}
+                                   <p class="text-center"><b> Active <i class="fa fa-circle fa-sm text-success"></i> </b></p>
+                                {% endif %}
+                                <p class="text-center">
+                                    <b><i class="fa fa-envelope fa-sm mu-color"></i> {{request.user.email}}</b>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9 col-sm-12 col-xs-12">
+                        <div id="content-main">
+                            <div class="">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#changepassword" class="text-muted">Personal Information</a></li>
+                                </ul>
+
+                                <div class="tab-content" style="padding-top: 10px;">
+                                    <div id="changepassword" class="tab-pane fade in active">
+                             <form>
+                                                <h5><b>PERSONAL INFORMATION</b></h5>
+                                                <div class="row form-group">
+                                                    <div>
+                                                        <div class="col-md-6 col-xs-12 col-sm-12">
+                                                            <label>Name</label>
+                                                            <input type="text" name="" value="{{request.user.first_name|title}}  - {{request.user.middle_name|title}} - {{request.user.last_name|title}}" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-xs-12 col-sm-12">
+                                                             <label>Sex</label>
+                                                            {% if  request.user.sex == 'M' %}
+                                                            <input type="text" name="" value="MALE" class="form-control" readonly>
+                                                            {% elif request.user.sex == 'F' %}
+                                                            <input type="text" name="" value="FEMALE" class="form-control" readonly>
+                                                            {% else %}
+                                                            <input type="text" name="" class="form-control" readonly>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="col-md-6 col-xs-12 col-sm-12 pt-5">
+                                                             <label>Email</label>
+                                                            <input type="text" name="" value="{{request.user.email}}" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-xs-12 col-sm-12 pt-5">
+                                                             <label>Phone</label>
+                                                            <input type="text" name="" value="{{request.user.phone}}" class="form-control" readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                 {% if request.user.title|upper == "STUDENT" %}
+                                                <div class="row form-group">
+                                                    <div>
+                                                        <div class="col-md-6 col-xs-12 col-sm-12 pt-5">
+                                                            <label>Programme</label>
+                                                            <input type="text"  name="" value="{{student.student.programme}}" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-xs-12 col-sm-12 pt-5">
+                                                            <label>Level of Study</label>
+                                                            <input type="text" name="" value="{{student.level}}" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-md-6 col-xs-12 col-sm-12 pt-5">
+                                                            <label>Residency</label>
+                                                            <input type="text" name="" value="{{student.student.residency}}" class="form-control"readonly >
+                                                        </div>
+                                                        <div class="col-md-6 col-xs-12 col-sm-12 pt-5">
+                                                            <label>Parent Phone</label>
+                                                            <input type="text" name="" value="{{student.student.parent_phone}}" class="form-control"readonly >
+                                                        </div>
+                                                        <div class="col-md-6 col-xs-12 col-sm-12 pt-5">
+                                                            <label>registration Status</label>
+
+                                                            <input type="text" name="" value="{{student.is_active}}" class="form-control" readonly>
+
+                                                        </div>
+                                                        <div class="col-md-6 col-xs-12 col-sm-12 pt-5">
+                                                            <label>Payment Status</label>
+
+                                                            <input type="text" name="" value="{{student.status}}" class="form-control" readonly>
+
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+                                 {% endif %}
+                                            </form>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    
+.img-circle {
+    border-radius: 50%;
+}
+.img {
+    max-width: 100%;
+}
+.pt-5{
+    padding-top: 10px;
+}
+</style>
+
+{% endblock %}
+
+
+{% block extrajs %}
+<script>
+    $('[required]').before('<span class="text-red" style="margin-left: -10px;">* </span>');
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form method="post">
+	{% csrf_token %}
+	{{ form }}
+	<button type="submit">Save changes</button>
+</form>

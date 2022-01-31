@@ -1,0 +1,75 @@
+{% extends 'admin/base.html' %}
+
+{% load i18n adminlte_options %}
+{% block title %}{{ title }} |
+{% get_adminlte_option 'site_title' as adminlte_site_title %}
+
+{% if adminlte_site_title.valid %}
+{{ adminlte_site_title.site_title }}
+{% else %}
+{{ site_title|default:_('KACHS') }}
+{% endif %}
+{% endblock %}
+
+{% block page_content %}
+<style>
+    .mu-bg {
+    background-color:#00181c;
+}
+.mu-color {
+    color: #dd8500;
+}
+</style>
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+      data-admin-utc-offset="{% now "Z" %}">
+
+<!-- Container -->
+<div id="container">
+
+    {% if not is_popup %}
+    <section class="content-header">
+        <h1>{% block content_title %}{% endblock %}</h1>
+        {% block breadcrumbs %}{% endblock %}
+    </section>
+    {% endif %}
+
+    <!-- Content -->
+    <section id="content" class="content">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+    </section>
+    <!-- END Content -->
+
+</div>
+<!-- END Container -->
+<script>
+    window.setTimeout(function() {
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove();
+    });
+}, 8000);
+</script>
+{% endblock %}
+
+{% block footer %}
+<div class="pull-right hidden-xs">
+    <b>Adminlte Version</b> 2.3.6
+</div>
+<strong>
+Copyright &copy; {% now 'Y' %}
+{% if adminlte.copyright %}
+    {{ adminlte.copyright }}.
+{% else %}
+    {% get_adminlte_version as adminlte_version %}
+    <a href="https://github.com/wuyue92tree/django-adminlte-ui/tree/{{ adminlte_version }}">django-adminlte-ui {{ adminlte_version }}</a>.
+{% endif %}
+</strong> All rights reserved.
+{% endblock %}
+
+{% block extrajs %} {% endblock %}

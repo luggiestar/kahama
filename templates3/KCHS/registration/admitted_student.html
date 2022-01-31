@@ -1,0 +1,150 @@
+{% load static %}
+<html>
+ <head>
+   <title>MSS-admitted student</title>
+
+   <style>
+
+    @page {
+        size: Letter;
+        margin: 0.2in 0.44in 0.5in 0.44in;
+        background-color: url("{% static 'img/MKUU.png' %}");
+
+        @bottom-right{
+        	content: "Page " counter(page) " of " counter(pages);
+        	margin: 0in 0in 1in 0in;
+    	}
+
+    	@bottom-left{
+        	content: "www.mkuusecondary.ac.tz";
+        	margin: 0in 0in 1in 0in;
+    	}
+
+  }
+  h1 {
+    text-align: center;
+  }
+  .table1 {
+    width: %;
+  }
+  .table1 {
+    border: 1px solid black;
+    margin: 0 auto;
+    width: 100%;
+	}
+  .table {
+    border-collapse: collapse;
+  }
+
+	.table1 th, td {
+    text-align: center;
+    border: 1px solid;
+	}
+
+	img {
+		width: 100%;
+	}
+  .small {
+    font-size: 14px;
+  }
+  .mediam {
+    font-size: 14px;
+
+  }
+  .width10 {
+  }
+  .width40 {
+    font-size: 14px;
+  }
+   .width5 {
+    width: 2%;
+  }
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  .table-bordered {
+    border: 1px solid #dee2e6;
+  }
+  .table tbody + tbody {
+  border-top: 2px solid #dee2e6;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+  text-align: center;
+}
+
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table-sm th,
+.table-sm td {
+  padding: 0.3rem;
+}
+
+.table-bordered {
+  border: 1px solid #dee2e6;
+}
+  footer{
+    position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+  }
+
+   </style>
+ </head>
+ <body>
+
+    <!--<img src="{% static 'img/logos.png' %}" alt="mama">-->
+
+    <center>
+         <h3> <u>  MINISTRY OF EDUCATION SCIENCE AND TECHNOLOGY</u></h3>
+         <h4> <u>  MKUU SECONDARY SCHOOL</u></h4>
+    <h5> <u>  SELECTED STUDENT {{year.year}}</u></h5>
+        </center>
+
+   <br>
+   <table class="table table-sm table-bordered table-striped">
+      <thead style="background:black; color: white; border:1px solid white;">
+
+      <th class="small width5">S/N</th>
+
+      <th class="small width40"><b>Entry Number</b></th>
+      <th class="small width40"><b>admission</b></th>
+
+										<th class="small width5 ">first Name</th>
+										<th class="small width5 ">Middle Name</th>
+										<th class="small width5 ">Last Name</th>
+      </thead>
+     <tbody>
+       {% for  i in get_student %}
+
+
+         <tr>
+           <td class="small width5">{{ forloop.counter }}</td>
+           <td class="small width5"><b>{{ i.entry_number }}</b> </td>
+           <td class="small width5">{{ i.admission }}</td>
+           <td class="small width40">{{ i.first_name|upper}}</td>
+           <td class="small width40">{{ i.middle_name|upper}}</td>
+           <td class="small width40">{{ i.last_name|upper}}</td>
+         </tr>
+       {% endfor %}
+     </tbody>
+   </table>
+   <footer>
+     <hr>
+   </footer>
+ </body>
+</html>

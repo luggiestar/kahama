@@ -1,0 +1,54 @@
+{% extends 'admin/base.html' %}
+
+{% block page_content %}
+{% load static %}
+<div class="container pt-3">
+    {% block bodyclass %}{{ block.super }} User upload profiles{% endblock %}
+    <div class="row ">
+        <div class="col-xs-6 col-md-offset-3">
+            <div class="panel" style="padding: 10px">
+                <h3 style="color: #fa856a">Upload user profiles</h3>
+                <hr>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div>
+                            <!--| means OR operator-->
+                            <strong>{{message|safe}}</strong>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                {{order}}
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <small class="text-danger"><b>Only accepts CSV files</b></small>
+                    <div class="form-group">
+                        <div class="pt-3">
+                            <label for="file1"> Upload a file</label>
+                            <input type="file" id="file1" name="file" class="form-control" id="myFile">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="pt-3">
+                            <button type="submit" class="btn mu-bg text-white">Upload <i class="fa fa-upload"></i> </button>
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+                {% for profile in profiles %}
+                    {{profile.name}}
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+</div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    //binds to onchange event of your input field
+    $('#myFile').bind('change', function() {
+    //this.files[0].size gets the size of your file.
+    alert(this.files[0].size);
+
+});
+</script>
+{% endblock %}
