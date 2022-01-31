@@ -117,12 +117,12 @@ def create_registration(sender, instance, created, **kwargs):
         password = last_name
 
         '''Get phone detail and convert and user id as recipient_id on api'''
-        number= "255755422199"
-        # phone = str(instance.phone)
-        phone = str(number)
-        # phone = phone[1:10]
-        phone = phone
-        # phone = '255' + phone
+        # number= "255755422199"
+        phone = str(instance.phone)
+        # phone = str(number)
+        phone = phone[1:10]
+        # phone = phone
+        phone = '255' + phone
 
         user_id = instance.id
 
