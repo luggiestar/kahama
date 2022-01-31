@@ -449,7 +449,7 @@ def upload_student_entry(request):
         for rowno, rowval in enumerate(worksheet.iter_rows(min_row=1, max_row=worksheet.max_row), start=2):
             get_program = Programme.objects.get(name="CLINICAL MEDICINE")
             get_level = Level.objects.get(name=worksheet.cell(row=rowno, column=8).value)
-            get_username = f"KCHS-{id_generator()}-{get_semester.academic_year.year}"
+            get_username = f"KACHS-{id_generator()}-{get_semester.academic_year.year}"
             create_email = f"{get_username}@kachs.ac.tz"
             get_phone = f"0{worksheet.cell(row=rowno, column=6).value}"
 
