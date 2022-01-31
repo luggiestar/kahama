@@ -451,6 +451,7 @@ def upload_student_entry(request):
             get_level = Level.objects.get(name=worksheet.cell(row=rowno, column=8).value)
             get_username = f"KCHS-{id_generator()}-{get_semester.academic_year.year}"
             create_email = f"{get_username}@kachs.ac.tz"
+            get_phone = f"0{worksheet.cell(row=rowno, column=6).value}"
 
             # get_weight = (worksheet.cell(row=rowno, column=7).value / decimal.Decimal(100)) * decimal.Decimal(
             #     get_group_assessment.weight)
@@ -462,7 +463,7 @@ def upload_student_entry(request):
                 last_name=worksheet.cell(row=rowno, column=4).value,
                 sex=worksheet.cell(row=rowno, column=5).value,
                 email=create_email,
-                phone=worksheet.cell(row=rowno, column=6).value,
+                phone=get_phone,
                 password=make_password(worksheet.cell(row=rowno, column=4).value),
                 title="student"
 

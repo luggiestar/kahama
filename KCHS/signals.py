@@ -127,7 +127,7 @@ def create_registration(sender, instance, created, **kwargs):
         user_id = instance.id
 
         message_body = f"Congratulation,Dear {full_name}, you have been selected to join KAHAMA COLLEGE OF HEALTH " \
-                       f"SCIENCE to pursue {program}\n please login to our system through \n https://www.kachs.herokuapp.com to proceed with  " \
+                       f"SCIENCE to pursue {program}\n please login to our system through \n https://kachs.herokuapp.com/login to proceed with  " \
                        f"registration\n username:{username},\n password:{password} "
 
         print(message_body)
