@@ -20,7 +20,8 @@ def calculate_student_semester_ca(sender, instance, created, raw=False, **kwargs
 
         get_group_assessment_ca = GroupAssessment.objects.filter(group=instance.assessment_group.group,
                                                                  category="CA").count()
-        count_assessment = SemesterAssessment.objects.filter(registration=instance.registration,programme_course=instance.programme_course,
+        count_assessment = SemesterAssessment.objects.filter(registration=instance.registration,
+                                                             programme_course=instance.programme_course,
                                                              academic_semester=instance.academic_semester,
                                                              assessment_group__category="CA").count()
         # print(count_assessment)
@@ -57,7 +58,8 @@ def calculate_student_semester_es(sender, instance, created, raw=False, **kwargs
 
         get_group_assessment_ca = GroupAssessment.objects.filter(group=instance.assessment_group.group,
                                                                  category="ES").count()
-        count_assessment = SemesterAssessment.objects.filter(registration=instance.registration, programme_course=instance.programme_course,
+        count_assessment = SemesterAssessment.objects.filter(registration=instance.registration,
+                                                             programme_course=instance.programme_course,
                                                              academic_semester=instance.academic_semester,
                                                              assessment_group__category="ES").count()
         # print(count_assessment)
@@ -96,20 +98,17 @@ def create_registration(sender, instance, created, **kwargs):
                                          semester=get_semester)
         save_registration.save()
 
-
         URL = 'https://apisms.beem.africa/v1/send'
         api_key = '2799f1a807695012'
         secret_key = 'YTU2NTkxZjQxZDc4NTY2NGZiZTVkYzI5ZWU1MzFmYzM4NzA4MTBkYjk5NWE4MzZmZmU0MjQ2OTU3YjJjN2IxZg===='
         content_type = 'application/json'
-        source_addr = 'EHGETS'
+        source_addr = 'KAHAMA COLL'
         apikey_and_apisecret = api_key + ':' + secret_key
-
 
         '''Get name and concatenate them'''
         first_name = instance.user.first_name
         last_name = instance.user.last_name
         full_name = f"{first_name} {last_name}"
-
 
         '''Get amount invested and daily amount earning'''
         program = instance.programme
@@ -127,7 +126,8 @@ def create_registration(sender, instance, created, **kwargs):
         user_id = instance.id
 
         message_body = f"Congratulation,Dear {full_name}, \nyou have been selected to join KAHAMA COLLEGE OF HEALTH " \
-                       f"SCIENCE to pursue {program}\n please login to our system through \n https://kachs.herokuapp.com/login to proceed with  " \
+                       f"SCIENCE to pursue {program}\n please login to our system through \n " \
+                       f"https://kachs.herokuapp.com/login to proceed with  " \
                        f"registration\n username:{username},\n password:{password} "
 
         print(message_body)
@@ -144,13 +144,12 @@ def create_registration(sender, instance, created, **kwargs):
             ],
         }),
 
-          headers={
-              'Content-Type': content_type,
-              'Authorization': 'Basic ' + api_key + ':' + secret_key,
-          },
+                                      headers={
+                                          'Content-Type': content_type,
+                                          'Authorization': 'Basic ' + api_key + ':' + secret_key,
+                                      },
 
-
-          auth=(api_key, secret_key), verify=False)
+                                      auth=(api_key, secret_key), verify=False)
 
         print(first_request.status_code)
         if first_request.status_code == 200:
@@ -159,7 +158,6 @@ def create_registration(sender, instance, created, **kwargs):
         print(first_request.json())
 
         return (first_request.json())
-
 
 
 @receiver(post_save, sender=FeeStructure, dispatch_uid='calculate_the_total_cost')
