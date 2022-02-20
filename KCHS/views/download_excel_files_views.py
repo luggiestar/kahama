@@ -83,7 +83,7 @@ def download_course_assessment_excel(request, assessment, course):
 
 def download_course_result_excel(request, course):
     # get_group_assessment = GroupAssessment.objects.get(id=assessment)
-    get_tutor = Workload.objects.filter(tutor=request.user, title="tutor").first()
+    get_tutor = Workload.objects.filter(tutor=request.user, tutor__title="tutor").first()
 
     get_semester = AcademicSemester.objects.get(is_active=True)
 
@@ -220,7 +220,7 @@ def download_course_result_excel(request, course):
 
 
 def student_course_assessment_template(request, assessment, course):
-    get_tutor = Workload.objects.filter(tutor=request.user, title="tutor").first()
+    get_tutor = Workload.objects.filter(tutor=request.user, tutor__title="tutor").first()
     get_group_assessment = GroupAssessment.objects.get(id=assessment)
     get_semester = AcademicSemester.objects.get(is_active=True)
 
