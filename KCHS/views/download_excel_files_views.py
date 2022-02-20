@@ -83,6 +83,8 @@ def download_course_assessment_excel(request, assessment, course):
 
 def download_course_result_excel(request, course):
     # get_group_assessment = GroupAssessment.objects.get(id=assessment)
+    get_tutor = Workload.objects.filter(tutor=request.user, title="tutor").first()
+
     get_semester = AcademicSemester.objects.get(is_active=True)
 
     get_course = ProgrammeCourseStructure.objects.get(course__code=course)
@@ -218,6 +220,7 @@ def download_course_result_excel(request, course):
 
 
 def student_course_assessment_template(request, assessment, course):
+    get_tutor = Workload.objects.filter(tutor=request.user, title="tutor").first()
     get_group_assessment = GroupAssessment.objects.get(id=assessment)
     get_semester = AcademicSemester.objects.get(is_active=True)
 
@@ -268,9 +271,9 @@ def student_course_assessment_template(request, assessment, course):
     # get your data, from database or from a text file...
 
     data = Registration.objects.filter(student__programme=get_course.programme,
-                                       semester=get_semester).exclude(
+                                       semester=get_semester, level=get_tutor.course.level).exclude(
         id__in=SemesterAssessment.objects.filter(programme_course=get_course, assessment_group=get_group_assessment,
-                                                 academic_semester=get_semester).values(
+                                                 academic_semester=get_semester,registration__level=get_tutor.course.level).values(
             'registration__id'))  # dummy method to fetch data.
     get_course = f"{get_course.course}"
     get_assessment = f"{get_group_assessment.item} ({get_group_assessment.category})"
@@ -440,7 +443,6 @@ def upload_student_entry(request):
         # getting a particular sheet by name out of many sheets
         worksheet = wb.worksheets[0]
         # print(worksheet)
-
 
         # iterating over the rows and
         # getting value from each cell in row
