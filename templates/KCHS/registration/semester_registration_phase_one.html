@@ -81,7 +81,7 @@
 
                             <div class="col-md-3 col-xs-3 submit-mobile">
                                 {% if request.user.title == "Accountant" %}
-                                <a href="" class="btn btn-danger" name="submit" type="submit"> Back  </a>
+                                <a href="{% url 'KCHS:financial_year_debt' %}" class="btn btn-danger" name="submit" type="submit"> Back  </a>
 
                                 {% else %}
            <a href="" class="btn btn-danger" name="submit" type="submit"> Back to Search <i class="fa fa-search"></i></a>
@@ -132,14 +132,14 @@
 						      		<div class="form-group" >
                                         <input type="text" name="id" value="{{get_account.user}}" hidden >
                                        Enter Amount For Examination Fee :
-                                        <input type="number" style="width:100%"  min="{{direct.minimum}}" max="{{direct.amount}}" name="direct"  required>
+                                        <input type="number" style="width:100%"  min="{{direct.minimum|stringformat:'f'}}" max="{{direct.amount|stringformat:'f'}}" name="direct">
 <h5 class="text-muted"> minimum amount for Examination Fee is&nbsp;&nbsp;<b class="text-danger">{{direct.minimum}}</b></h5>
 
                                     </div>
                     <hr>
                                     <div class="form-group" >
                                        Enter Amount For Other Fee :
-                                        <input type="number" style="width:100%"  min="{{development.minimum}}" max="{{development.amount}}" name="development"  required>
+                                        <input type="number" style="width:100%"  min="{{development.minimum|stringformat:'f'}}" max="{{development.amount|stringformat:'f'}}" name="development">
                                     <h5 class="text-muted"> minimum amount for Other Fee is &nbsp;&nbsp;<b class="text-danger">{{development.minimum}}</b></h5>
 
                                     </div>
@@ -161,7 +161,7 @@
         <div class="col-xl-6 col-md-6 col-xs-12 col-sm-12 wow fadeIn" data-wow-delay="0.3s">
 
 
-               <a class="btn btn-block btn-danger" href="#">2.0 COMPLETE PAYMENT FORM</a>
+               <a class="btn btn-block btn-danger" href="#">3.0 COMPLETE PAYMENT FORM</a>
 <br>
 <form action="{% url 'KCHS:save_student_payments' %}" method="post" >
 								      		{% csrf_token %}
@@ -170,13 +170,13 @@
                                         <input type="text" name="id" value="{{get_account.user}}" hidden >
                                              <h5 class="text-muted"> Remained amount for Tuition Fee:<b class="text-danger">{{get_direct_due.due}}</b></h5>
                                              <br>
-                                       Enter Amount For Direct Cost :<input type="number" style="width:100%"   min="100" max="{{get_direct_due.due}}" name="direct"  required>
+                                       Enter Amount For Direct Cost :<input type="number" style="width:100%"   min="100" max="{{get_direct_due.due|stringformat:'f'}}"  name="direct">
                                     </div>
                                             <hr>
                                     <div class="form-group" >
                                          <h5 class="text-muted"> remained amount for Other cost Fee: <b class="text-danger">{{get_development_due.due}}</b></h5>
                                              <br>
-                                       Enter Amount For Development Cost :<input type="number"  style="width:100%"  min="100" max="{{get_development_due.due}}" name="development"  required>
+                                       Enter Amount For Development Cost :<input type="number"  style="width:100%"  min="100" max="{{get_development_due.due|stringformat:'f'}}" name="development">
                                     </div>
 						      				<div class="form-group">
 						      					<button type="submit"  class="btn mu-bg mu-color btn-block"> <b>SAVE PAYMENT</b></button>

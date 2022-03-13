@@ -74,7 +74,7 @@ def course_assessment_group(request):
 
 
 def course_list(request):
-    get_course = ProgrammeCourseStructure.objects.all()
+    get_course = ProgrammeCourseStructure.objects.all().order_by('programme', 'semester')
     get_group = GroupAssessment.objects.all().values('group__id', 'group__description', 'group__name').distinct()
     get_item = GroupAssessment.objects.all().order_by('category')
 

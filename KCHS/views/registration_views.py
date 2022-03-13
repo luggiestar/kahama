@@ -9,7 +9,7 @@ from ..models import *
 from ..forms import *
 from ..models import *
 
-User = settings.AUTH_USER_MODEL
+# User = settings.AUTH_USER_MODEL
 
 from django.contrib.auth.decorators import login_required
 
@@ -26,6 +26,21 @@ def student_entry_list(request):
     }
 
     return render(request, 'KCHS/registration/student_entry.html', context)
+
+
+def staff_entry_list(request):
+    get_registration = User.objects.all().exclude(id__in=User.objects.filter(title="student").values('id'))
+    # students=('staff','Accountant')
+    # get_registration = User.objects.filter(title__in=students)
+    # get_group = GroupAssessment.objects.all().values('group__id', 'group__description', 'group__name').distinct()
+    # get_item = GroupAssessment.objects.all().order_by('category')
+
+    context = {
+        'registration': get_registration,
+
+    }
+
+    return render(request, 'KCHS/registration/staff_entry.html', context)
 
 
 def start_registration(request):
@@ -50,24 +65,24 @@ def register_phase_one(request, username):
     get_crdb = BankAccount.objects.filter(bank="CRDB").first()
     get_nmb = BankAccount.objects.filter(bank="NMB").first()
     get_boa = BankAccount.objects.filter(bank="BOA").first()
-    try:
-        # get_amount = Payment.objects.filter(registration=get_account).aggregate(total=Sum('amount'))
-        get_direct_payment_amount = PaymentStructure.objects.get(programme=get_account.programme,
-                                                                 level=get_account.entry_level, account=get_crdb,
-                                                                 semester=get_semester.semester)
-        get_development_payment_amount = PaymentStructure.objects.get(programme=get_account.programme,
-                                                                      level=get_account.entry_level, account=get_nmb,
-                                                                      semester=get_semester.semester)
+    # try:
+    # get_amount = Payment.objects.filter(registration=get_account).aggregate(total=Sum('amount'))
+    get_direct_payment_amount = PaymentStructure.objects.get(programme=get_account.programme,
+                                                             level=get_account.entry_level, account=get_crdb,
+                                                             semester=get_semester.semester)
+    get_development_payment_amount = PaymentStructure.objects.get(programme=get_account.programme,
+                                                                  level=get_account.entry_level, account=get_nmb,
+                                                                  semester=get_semester.semester)
 
-        get_direct_due = Payment.objects.filter(registration__student=get_account, account=get_crdb).order_by(
-            '-id').first()
-        get_development_due = Payment.objects.filter(registration__student=get_account, account=get_nmb).order_by(
-            '-id').first()
-    except:
-        get_development_due = None
-        get_direct_payment_amount = None
-        get_development_payment_amount = None
-        get_direct_due = None
+    get_direct_due = Payment.objects.filter(registration__student=get_account, account=get_crdb).order_by(
+        '-id').first()
+    get_development_due = Payment.objects.filter(registration__student=get_account, account=get_nmb).order_by(
+        '-id').first()
+    # except:
+    #     get_development_due = None
+    #     get_direct_payment_amount = None
+    #     get_development_payment_amount = None
+    #     get_direct_due = None
 
     context = {
         'get_account': get_account,
@@ -90,30 +105,48 @@ def save_student_payments(request):
         get_semester = get_object_or_404(AcademicSemester, is_active=True)
         get_crdb = BankAccount.objects.filter(bank="CRDB").first()
         get_nmb = BankAccount.objects.filter(bank="NMB").first()
-        try:
-            register_student = Registration(
-                student=get_account,
-                level=get_account.entry_level,
-                semester=get_semester,
-                registerer=request.user,
-                status=get_status,
-                is_active=True,
+        if direct and development:
 
-            )
-            register_student.save()
+            try:
+                register_student = Registration(
+                    student=get_account,
+                    level=get_account.entry_level,
+                    semester=get_semester,
+                    registerer=request.user,
+                    status=get_status,
+                    is_active=True,
+
+                )
+                register_student.save()
+                get_registration = Registration.objects.filter(student=get_account).order_by('-id').first()
+                if decimal.Decimal(direct) >= 1:
+                    save_direct = Payment.objects.create(registration=get_registration, account=get_crdb,
+                                                         amount=decimal.Decimal(direct), created_by=request.user)
+                if decimal.Decimal(development) >= 1:
+                    save_development = Payment.objects.create(registration=get_registration, account=get_nmb,
+                                                              amount=decimal.Decimal(development),
+                                                              created_by=request.user)
+            except:
+
+                get_registration = Registration.objects.filter(student=get_account).order_by('-id').first()
+                if decimal.Decimal(direct) >= 1:
+                    save_direct = Payment.objects.create(registration=get_registration, account=get_crdb,
+                                                         amount=decimal.Decimal(direct), created_by=request.user)
+                if decimal.Decimal(development) >= 1:
+                    save_development = Payment.objects.create(registration=get_registration, account=get_nmb,
+                                                              amount=decimal.Decimal(development),
+                                                              created_by=request.user)
+        elif direct:
             get_registration = Registration.objects.filter(student=get_account).order_by('-id').first()
-            save_direct = Payment.objects.create(registration=get_registration, account=get_crdb,
-                                                 amount=decimal.Decimal(direct), created_by=request.user)
-            save_development = Payment.objects.create(registration=get_registration, account=get_nmb,
-                                                      amount=decimal.Decimal(development), created_by=request.user)
-        except:
+            if decimal.Decimal(direct) >= 1:
+                save_direct = Payment.objects.create(registration=get_registration, account=get_crdb,
+                                                     amount=decimal.Decimal(direct), created_by=request.user)
+        elif development:
 
             get_registration = Registration.objects.filter(student=get_account).order_by('-id').first()
-            save_direct = Payment.objects.create(registration=get_registration, account=get_crdb,
-                                                 amount=decimal.Decimal(direct), created_by=request.user)
-            save_development = Payment.objects.create(registration=get_registration, account=get_nmb,
-                                                      amount=decimal.Decimal(development), created_by=request.user)
-            # print(save_direct)
+            if decimal.Decimal(development) >= 1:
+                save_development = Payment.objects.create(registration=get_registration, account=get_nmb,
+                                                          amount=decimal.Decimal(development), created_by=request.user)
 
         messages.success(request, f"Payment Added Successfully")
         return redirect('KCHS:register_phase_one', username=get_account.user)

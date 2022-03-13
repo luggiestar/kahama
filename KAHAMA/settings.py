@@ -43,8 +43,10 @@ INSTALLED_APPS = [
     'import_export',
     'crispy_forms',
     'KCHS',
-]
+    'djmoney',
 
+]
+USE_THOUSAND_SEPARATOR = True
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -157,7 +159,7 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)

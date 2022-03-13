@@ -104,7 +104,57 @@
 
 	{% for x in payment %}
 	{% if z.id == x.registration %}
-													<td class="text-justify">{{x.total}} </td>
+													<td class="text-justify">
+													<a class="mu-color" href="#"  data-toggle="modal" data-target="#{{x.registration}}"> <i class="fa fa-eye" aria-hidden="true"></i> {{x.total}}
+                </a>
+					<div id="{{x.registration}}" class="modal fade" role="dialog">
+								  <div class="modal-dialog">
+
+								    <!-- Modal content-->
+								    <div class="modal-content">
+								      <div class="modal-header mu-bg">
+								        <button type="button" class="close" data-dismiss="modal">&times;</button>
+								        <h4 class="modal-title text-center mu-color"> <b> Semester Payment BreakDown</b> </h4>
+								      </div>
+								      <div class="modal-body">
+										              <div class="list-group">
+
+														  <a href="#" class="list-group-item mu-bg mu-color h5 " style=" color: white;display: flex; justify-content: space-between"><span>Bank Account</span>  <span>Amount Paid</span> <span>Paid Date</span></a>
+{% for y in breakdown %}
+{% if y.registration.id == x.registration %}
+<a href="#" class="list-group-item" style=" display: flex; justify-content: space-between"><span>{{y.account}}</span>  <span>{{y.amount}} TSh</span> <span>{{y.date}}</span></a>
+
+
+{% endif %}
+{% endfor %}
+
+			</div>
+
+
+								      </div>
+								      <div class="modal-footer">
+								        <button type="button" class="btn mu-bg-oranges" data-dismiss="modal">Close</button>
+								      </div>
+								    </div>
+
+								  </div>
+								</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+													</td>
 	<td class="text-justify text-danger"><b>{{p.total|sub:x.total}}</b> </td>
 
 													{% endif %}

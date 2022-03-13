@@ -621,6 +621,7 @@
 
                      <ul class="treeview-menu">
                         <li><a href="{% url 'KCHS:student_entry_list' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>students Entry</a></li>
+                        <li><a href="{% url 'KCHS:staff_entry_list' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Staff Entry</a></li>
                     </ul>
 
                     {% endif %}
@@ -675,7 +676,7 @@
 
 
 
-                        <li><a href="{% url 'KCHS:financial_year_debt' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}fa-{% endif %}"></i>Semester Partial PAyment</a></li>
+                        <li><a href="{% url 'KCHS:financial_year_debt' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}fa-{% endif %}"></i>Semester Partial Payment</a></li>
                                                 <li><a href="{% url 'KCHS:programme_list' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Payment Structure</a></li>
 
                         <li><a href="{% url 'KCHS:fee_payment_item' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %} "></i>Payments Item</a></li>

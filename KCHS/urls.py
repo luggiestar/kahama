@@ -28,6 +28,7 @@ urlpatterns = [
 
     # Views for Registration
     path('student-entry/', views.student_entry_list, name="student_entry_list"),
+    path('staff-entry-list/', views.staff_entry_list, name="staff_entry_list"),
     path('upload-student-entry/', views.upload_student_entry, name="upload_student_entry"),
     path('-student-entry-template/', views.student_entry_template, name="student_entry_template"),
     path('registration-home-page/', views.start_registration, name="registration_home"),

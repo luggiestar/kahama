@@ -27,16 +27,29 @@ def programme_list(request):
 def programme_payment_structure(request, programme_name, level_name):
     get_programme = Programme.objects.get(name=programme_name)
     get_programme_level = get_object_or_404(Level, name=level_name)
-    get_payment_structure = PaymentStructure.objects.filter(programme=get_programme, level=get_programme_level)
+    # get_total_payment_sem1 = PaymentStructure.objects.filter(programme=get_programme, level=get_programme_level,
+    # semester__number="1").first() get_total_payment_sem2 = PaymentStructure.objects.filter(programme=get_programme,
+    # level=get_programme_level, semester__number="2").first()
     get_crdb = BankAccount.objects.filter(bank="CRDB").first()
     get_nmb = BankAccount.objects.filter(bank="NMB").first()
     get_boa = BankAccount.objects.filter(bank="BOA").first()
     get_payment_semester_one = FeeStructure.objects.filter(programme=get_programme, semester__number="1",
                                                            level=get_programme_level)
+
+    get_total_payment_sem1 = FeeStructure.objects.filter(programme=get_programme, semester__number="1",
+                                                         level=get_programme_level).values('level').aggregate(
+        amount=Sum('amount'))
     get_payment_semester_two = FeeStructure.objects.filter(programme=get_programme, semester__number="2",
                                                            level=get_programme_level)
+
+    get_total_payment_sem2 = FeeStructure.objects.filter(programme=get_programme, semester__number="2",
+                                                         level=get_programme_level).values('level').aggregate(
+        amount=Sum('amount'))
     context = {
         'programme': get_programme,
+        'level': get_programme_level,
+        'total_sem1': get_total_payment_sem1,
+        'total_sem2': get_total_payment_sem2,
         'sem1': get_payment_semester_one,
         'sem2': get_payment_semester_two,
         'nmb': get_nmb,
@@ -52,8 +65,10 @@ def financial_year_debt(request):
     get_semester = get_object_or_404(AcademicSemester, is_active=True)
     status = Status.objects.get(code="PARTIAL PAID")
 
+    get_payment_breakdown = Payment.objects.filter(registration__status=status)
     get_payment = Payment.objects.filter(registration__status=status).values(
-        'registration').annotate(total=Sum('amount'))
+        'registration', ).annotate(total=Sum('amount'))
+
     get_student = Registration.objects.filter(id__in=Payment.objects.filter(registration__status=status).values(
         'registration'), semester=get_semester)
 
@@ -65,6 +80,7 @@ def financial_year_debt(request):
         'payment': get_payment,
         'registration': get_student,
         'total': get_total_amount,
+        'breakdown': get_payment_breakdown,
 
     }
     return render(request, 'KCHS/finance/financial_year_debt.html', context)
@@ -82,11 +98,14 @@ def semester_complete_payment_list(request):
     get_total_amount = PaymentStructure.objects.filter(semester=get_semester.semester).values('programme',
                                                                                               'level').annotate(
         total=Sum('amount'))
+    get_payment_breakdown = Payment.objects.filter(registration__status=status).order_by('date','account')
+
 
     context = {
         'payment': get_payment,
         'registration': get_student,
         'total': get_total_amount,
+        'breakdown': get_payment_breakdown,
 
     }
     return render(request, 'KCHS/finance/semester_income.html', context)

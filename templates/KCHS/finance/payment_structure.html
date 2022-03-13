@@ -62,7 +62,11 @@
                                <a  href="{% url 'KCHS:programme_list' %}" class=" mu-color" style="margin-top: -2rem;" ><i class="fa fa-arrow-left"></i> Back</a>
 
              <center>
-        <h4 style="margin-top: -4rem;"><b>Payment Account</b></h4>
+
+                 <h3><u>{{programme}}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{level}}</u></h3>
+                 <br>
+
+        <h4 style="margin-top: -1rem;"><b>Payment Account</b></h4>
         <p><i class="fa fa-info-circle fa-1x fa-lg text-danger"></i>
         <strong style="margin-left: 2r;">{% if crdb %} School Fee: {{crdb}} {% endif %} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-info-circle fa-1x fa-lg text-danger"></i>Other cost: {% if nmb %}  {{nmb}} {% endif %},{% if boa %}  {{boa}} {% endif %}</strong></p>
 
@@ -76,12 +80,13 @@
 
             <div class="list-group">
 
-                <a href="#" class="list-group-item mu-bg mu-color" style=" color: white">SEMESTER ONE</a>
+                <a href="#" class="list-group-item mu-bg mu-color" style=" color: white;display: flex; justify-content: space-between"><span>SEMESTER ONE </span><span><b class="mu-color">{{total_sem1.amount}}</b> Tsh</span></a>
                 <a href="#" class="list-group-item text-center"><b>ITEMS</b></a>
 {% if sem1 %}
                 {% for i in sem1 %}
+<a href="#" class="list-group-item" style=" display: flex; justify-content: space-between"><span>0{{forloop.counter}}:</span>  <span>{{i.fee.name|lower}}</span> <span><b>{{i.amount}}TSh</b></span></a>
 
-                <a href="#" class="list-group-item">0{{forloop.counter}}:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{i.fee.name|lower}}&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp;  <b>{{i.amount}}TSh</b> </a>
+
 
 {% endfor %}
 {% else %}
@@ -99,12 +104,12 @@
 
             <div class="list-group">
 
-                <a href="#" class="list-group-item mu-bg mu-color" style=" color: white">SEMESTER TWO</a>
+                <a href="#" class="list-group-item mu-bg mu-color" style=" color: white;display: flex; justify-content: space-between"><span>SEMESTER TWO</span><span> <b class="mu-color">{{total_sem2.amount}}</b> Tsh</span></a>
                 <a href="#" class="list-group-item text-center"><b>ITEMS</b></a>
 {% if sem2 %}
                 {% for i in sem2 %}
 
-                <a href="#" class="list-group-item">0{{forloop.counter}}:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{i.fee.name|lower}}&nbsp;&nbsp;&nbsp; =&nbsp;&nbsp;&nbsp;  <b>{{i.amount}}TSh</b> </a>
+<a href="#" class="list-group-item text-right" style=" display: flex; justify-content: space-between"><span>0{{forloop.counter}}:</span>  <span>{{i.fee.name|lower}}</span> <span><b>{{i.amount}}TSh</b></span></a>
 
 {% endfor %}
 {% else %}
