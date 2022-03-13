@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'import_export',
     'crispy_forms',
     'KCHS',
-    'djmoney',
+
 
 ]
 USE_THOUSAND_SEPARATOR = True
