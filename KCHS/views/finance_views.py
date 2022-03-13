@@ -122,3 +122,22 @@ def fee_payment_item(request):
     }
 
     return render(request, 'KCHS/finance/fee_item.html', context)
+def payment_report(request):
+    get_semester = get_object_or_404(AcademicSemester, is_active=True)
+    get_payment = PaymentSummary.objects.filter(registration__semester=get_semester).values('registration__semester','registration__level__name','registration__student__programme__name').annotate(total=Sum('amount'), due=Sum('due'))
+    get_total_payment_summary = PaymentSummary.objects.filter(registration__semester=get_semester).aggregate(
+        Sum('amount'))['amount__sum'] or 0.00
+    get_due_payment_summary = PaymentSummary.objects.filter(registration__semester=get_semester).aggregate(
+        Sum('due'))['due__sum'] or 0.00
+    # get_group = GroupAssessment.objects.all().values('group__id', 'group__description', 'group__name').distinct()
+    # get_item = GroupAssessment.objects.all().order_by('category')
+
+    context = {
+        'semester': get_semester,
+        'payment': get_payment,
+        'total': get_total_payment_summary,
+        'due': get_due_payment_summary,
+
+    }
+
+    return render(request, 'KCHS/finance/payment_report.html', context)

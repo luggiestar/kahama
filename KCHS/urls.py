@@ -19,6 +19,7 @@ urlpatterns = [
     path('financial-year-incomplete-payment/', views.financial_year_debt, name="financial_year_debt"),
     path('Semester-full-payment-list/', views.semester_complete_payment_list, name="semester_complete_payment_list"),
     path('fee-payment-item-list/', views.fee_payment_item, name="fee_payment_item"),
+    path('semester-payment-report/', views.payment_report, name="payment_report"),
 
     # VIEWS FOR STUDENT
     path('student-semester-courses', views.student_semester_course, name="student_semester_course"),
@@ -54,6 +55,8 @@ urlpatterns = [
          name="tutor_course_assessment"),
     path('tutor-course-assessment-group-result/<assessment>/<course>', views.course_assessment_result,
          name="course_assessment_result"),
+    path('semester-payment-report-excel/<programme>/<level>', views.get_semester_payment_report,
+         name="get_semester_payment_report"),
     path('download-course-semester-assessment/<assessment>/<course>', views.download_course_assessment_excel,
          name="download_course_assessment_excel"),
     path('download-course-semester-result/<course>', views.download_course_result_excel,

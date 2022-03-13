@@ -10,6 +10,7 @@ from .fee_item import *
 from .fee_structure import *
 from .intake import *
 from .payments import *
+from .payment_summary import *
 from .programme import *
 from .program_semester_payment import *
 from .program_couser_structure import *

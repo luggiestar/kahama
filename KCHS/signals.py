@@ -230,14 +230,28 @@ def check_full_payment(sender, instance, **kwargs):
     get_payment_structure = PaymentStructure.objects.filter(programme=instance.registration.student.programme,
                                                             level=instance.registration.student.entry_level,
 
-                                                            semester=instance.registration.semester.semester).aggregate(Sum('amount'))['amount__sum'] or 0.00
-    get_payment_structure2 = Payment.objects.filter(registration=instance.registration).aggregate(Sum('amount'))['amount__sum'] or 0.00
+                                                            semester=instance.registration.semester.semester).aggregate(
+        Sum('amount'))['amount__sum'] or 0.00
+    get_payment_structure2 = Payment.objects.filter(registration=instance.registration).aggregate(Sum('amount'))[
+                                 'amount__sum'] or 0.00
     balance = get_payment_structure - get_payment_structure2
+    try:
+
+        get_latest_balance = PaymentSummary.objects.get(registration=instance.registration)
+        get_latest_balance.amount = get_payment_structure2
+        get_latest_balance.due = balance
+        get_latest_balance.save()
+    except:
+        PaymentSummary.objects.create(registration=instance.registration, amount=get_payment_structure2, due=balance)
+
     if balance <= 0:
         get_status = Status.objects.get(code="FULL PAID")
         save_registration = Registration.objects.get(id=instance.registration.id)
         save_registration.status = get_status
         save_registration.save()
+
+
+
 #
 # @receiver(post_save, sender=Type, dispatch_uid='create_payment_structure')
 # def create_payment_structure_total(sender, instance, created, **kwargs):
