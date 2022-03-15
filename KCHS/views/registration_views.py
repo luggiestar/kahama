@@ -2,7 +2,7 @@ import decimal
 
 from django.conf import settings
 from django.contrib import messages
-from django.db.models import Sum
+from django.db.models import Sum, Count, Case, When, IntegerField
 from django.shortcuts import render, redirect, get_object_or_404
 
 from ..models import *
@@ -222,3 +222,37 @@ def complete_student_registration(request, student):
             messages.error(request, f"Failed, Something went wrong")
 
             return redirect('KCHS:registration_phase_two')
+
+
+def registration_report(request):
+    get_semester = get_object_or_404(AcademicSemester, is_active=True)
+    get_student_paid_full = Registration.objects.filter(semester=get_semester,status__code="FULL PAID").values('level__name','student__programme__name', 'status').annotate(
+        total=Count('status')).order_by('student__programme__name','level__name')
+    get_student_paid_partial = Registration.objects.filter(semester=get_semester, status__code="PARTIAL PAID").values('level__name','student__programme__name', 'status').annotate(
+        total=Count('status')).order_by('student__programme__name','level__name')
+    get_student_not_paid = Registration.objects.filter(semester=get_semester,status__code="NOT PAID").values('level__name','student__programme__name', 'status').annotate(
+        total=Count('status')).order_by('student__programme__name','level__name')
+    get_programme = Registration.objects.filter(semester=get_semester).values('level__name', 'student__programme__name').distinct()
+    get_total_full_paid = Registration.objects.filter(semester=get_semester,status__code="FULL PAID").aggregate(
+        Count('status'))['status__count'] or 0.00
+    get_total_partial_paid = Registration.objects.filter(semester=get_semester,status__code="PARTIAL PAID").aggregate(
+        Count('status'))['status__count'] or 0.00
+    get_total_unpaid = Registration.objects.filter(semester=get_semester, status__code="NOT PAID").aggregate(
+        Count('status'))['status__count'] or 0.00
+
+
+    # get_item = GroupAssessment.objects.all().order_by('category')
+
+    context = {
+        'semester': get_semester,
+        'full': get_student_paid_full,
+        'partial': get_student_paid_partial,
+        'unpaid': get_student_not_paid,
+        'programme': get_programme,
+        'total': get_total_full_paid,
+        'due': get_total_partial_paid,
+        'total_unpaid': get_total_unpaid,
+
+    }
+
+    return render(request, 'KCHS/registration/registration_report.html', context)

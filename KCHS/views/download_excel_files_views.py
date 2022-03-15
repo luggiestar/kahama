@@ -3,6 +3,7 @@ import xlwt
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.template.defaultfilters import upper
@@ -498,7 +499,7 @@ def get_semester_payment_report(request, programme, level):
     # content-type of response
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
-    template_name ="payment_report" + "_" +  str(get_pogramme.name) + "_" + str(get_level.name)
+    template_name = "payment_report" + "_" + str(get_pogramme.name) + "_" + str(get_level.name)
     name = f"{template_name}.xlsx"
     response['Content-Disposition'] = 'attachment; filename=' + name
 
@@ -521,7 +522,7 @@ def get_semester_payment_report(request, programme, level):
     row_num = 0
     # Add a bold format to use to highlight cells.
     bold = wb.add_format({'bold': 1, 'font_color': 'blue', 'font_name': 'Cambria'})
-    bold2 = wb.add_format({ 'font_color': 'red', 'font_name': 'Cambria'})
+    bold2 = wb.add_format({'font_color': 'red', 'font_name': 'Cambria'})
 
     # bold.set_font_name('Times New Roman')
     # font_style = xlwt.XFStyle()
@@ -540,8 +541,9 @@ def get_semester_payment_report(request, programme, level):
 
     # get your data, from database or from a text file...
 
-    data = PaymentSummary.objects.filter(registration__id__in=Registration.objects.filter(semester=get_semester,level=get_level,student__programme=get_pogramme).values('id'))
-
+    data = PaymentSummary.objects.filter(
+        registration__id__in=Registration.objects.filter(semester=get_semester, level=get_level,
+                                                         student__programme=get_pogramme).values('id'))
 
     for my_row in data:
         get_name = f"{my_row.registration.student.user.first_name} {my_row.registration.student.user.middle_name} {my_row.registration.student.user.last_name} "
@@ -557,6 +559,78 @@ def get_semester_payment_report(request, programme, level):
         ws.write(row_num, 3, get_program)
         ws.write(row_num, 4, get_total)
         ws.write(row_num, 5, get_due, bold2)
+
+    wb.close()
+    return response
+
+
+def get_semester_unregistered_report(request):
+    get_semester = AcademicSemester.objects.get(is_active=True)
+
+    # content-type of response
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+    template_name = "unregistered_student_semester" + "_" + str(get_semester.semester.number) + "_" + str(
+        get_semester.academic_year.year)
+    name = f"{template_name}.xlsx"
+    response['Content-Disposition'] = 'attachment; filename=' + name
+
+    # book = Workbook(response, {'in_memory': True})
+    # sheet = book.add_worksheet('sheet1')
+    #
+
+    # creating workbook
+    wb = Workbook(response, {'in_memory': True})
+
+    # adding sheet
+    ws = wb.add_worksheet("sheet1")
+    ws.set_column('B:B', 17)
+    ws.set_column('C:C', 33)
+    ws.set_column('D:D', 30)
+    ws.set_column('E:E', 15)
+    ws.set_column('F:F', 22)
+    ws.set_column('G:G', 24)
+
+    # Sheet header, first row
+    row_num = 0
+    # Add a bold format to use to highlight cells.
+    bold = wb.add_format({'bold': 1, 'font_color': 'blue', 'font_name': 'Cambria'})
+    bold2 = wb.add_format({'font_color': 'red', 'font_name': 'Cambria'})
+
+    # bold.set_font_name('Times New Roman')
+    # font_style = xlwt.XFStyle()
+    # headers are bold
+    # font_style.font.bold = True
+
+    # column header names, you can use your own headers here
+    columns = ['S/N', 'Registration#', 'Full Name', 'Programme', 'Level', 'Payment Status', 'Registration Status']
+
+    # write column headers in sheet
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], bold)
+
+    # Sheet body, remaining rows
+    # font_style = xlwt.XFStyle()
+
+    # get your data, from database or from a text file...
+
+    data = Registration.objects.filter(semester=get_semester, status__code="NOT PAID").order_by('student__programme','level')
+    for my_row in data:
+        get_name = f"{my_row.student.user.first_name} {my_row.student.user.middle_name} {my_row.student.user.last_name} "
+        get_reg_number = f"{my_row.student.user}"
+        get_program = f"{my_row.student.programme}"
+        get_level = f"{my_row.level}"
+        get_status = f"{my_row.status}"
+        get_registration = "Not Registered"
+
+        row_num = row_num + 1
+        ws.write(row_num, 0, row_num)
+        ws.write(row_num, 1, get_reg_number)
+        ws.write(row_num, 2, get_name)
+        ws.write(row_num, 3, get_program)
+        ws.write(row_num, 4, get_level)
+        ws.write(row_num, 5, get_status)
+        ws.write(row_num, 6, get_registration)
 
     wb.close()
     return response

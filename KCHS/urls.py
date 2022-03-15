@@ -37,6 +37,10 @@ urlpatterns = [
     path('registration-phase-one-save-payments/', views.save_student_payments, name="save_student_payments"),
     path('registration-phase-two/', views.registration_phase_two, name="registration_phase_two"),
     path('save-student-registration/<student>', views.complete_student_registration, name="complete_registration"),
+    path('semester-registration-report/', views.registration_report, name="registration_report"),
+    path('semester-unregistered-student-report/', views.get_semester_unregistered_report,
+         name="get_semester_unregistered_report"),
+
     # VIEWS FOR ACADEMIC
 
     path('teaching-Workload-list/', views.workload_setting, name="workload_setting"),

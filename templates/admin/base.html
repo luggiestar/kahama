@@ -578,7 +578,7 @@
                 {% endif %}
                 {% if   request.user.is_staff  %}
 
-{% if   request.user.title|upper == "ACCOUNTANT" or request.user|has_group:"Admission Officer" or request.user.is_superuser %}
+{% if   request.user.title|upper == "ACCOUNTANT" or request.user|has_group:"Admission Officer" or request.user.is_superuser or  request.user.title|upper == "DIRECTOR"  %}
                 <li {% if not app.admin_url %}class="treeview"{% endif %}>
                     <a href="{% if app.admin_url %}{{app.admin_url}}{% else %}javascript:void(0){% endif %}">
                         <i class="fa {% if app.icon %} {{app.icon}} {% else %}fa-sitemap{% endif %} mu-color"></i>
@@ -590,6 +590,7 @@
                     </a>
                     {% if not app.admin_url %}
 
+
                      <ul class="treeview-menu">
                           {% if   request.user.title|upper == "ACCOUNTANT"  %}
                         <li><a href="{% url 'KCHS:registration_home' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Semester Payments</a></li>
@@ -597,8 +598,11 @@
                          {% if request.user|has_group:"Admission Officer" or request.user.is_superuser %}
                         <li><a href="{% url 'KCHS:registration_phase_two' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Semester Registration</a></li>
                                                  <li><a href="{% url 'KCHS:admission_letter' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Entry Student List</a></li>
+{% endif %}
+                         {% if request.user|has_group:"Admission Officer" or request.user.is_superuser or request.user.title|upper == "ACCOUNTANT" or request.user.title|upper == "DIRECTOR"   %}
+                                                 <li><a href="{% url 'KCHS:registration_report' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Report</a></li>
+ {% endif %}
 
-                   {% endif %}
                     </ul>
 
 
@@ -657,7 +661,8 @@
                     {% endif %}
                 </li>
 {% endif %}
-                {% if request.user.title|upper == "ACCOUNTANT" %}
+{% if request.user.is_superuser or request.user.title|upper == "ACCOUNTANT" or request.user.title|upper == "DIRECTOR"   %}
+
                  <li {% if not app.admin_url %}class="treeview"{% endif %}>
                     <a href="{% if app.admin_url %}{{app.admin_url}}{% else %}javascript:void(0){% endif %}">
                         <i class="fas {% if app.icon %} {{app.icon}} {% else %}fa-line-chart{% endif %} mu-color"></i>
@@ -669,6 +674,8 @@
                     </a>
                     {% if not app.admin_url %}
                     <ul class="treeview-menu">
+                        {% if request.user.is_superuser or request.user.title|upper == "ACCOUNTANT" %}
+
                         <li><a href="{% url 'KCHS:semester_complete_payment_list' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Semester Full Payment</a></li>
 
 
@@ -680,6 +687,7 @@
                                                 <li><a href="{% url 'KCHS:programme_list' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %}"></i>Payment Structure</a></li>
 
                         <li><a href="{% url 'KCHS:fee_payment_item' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %} "></i>Payments Item</a></li>
+                         {% endif %}
                         <li><a href="{% url 'KCHS:payment_report' %}" ><i class="fa {% if model.icon %} {{model.icon}} {% else %}{% endif %} "></i>Report</a></li>
 
 
