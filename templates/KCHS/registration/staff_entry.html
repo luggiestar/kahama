@@ -54,12 +54,12 @@
 	<div class="col-md-12 col-xl-12">
 			<div class="panel panel-body">
 			  <div >
-				  <h3 class="text-muted text-center" style="margin-top: -1rem"> <i class="fas fa-book-open fa-sm fa-fw mr-2" ></i> <b class="mu-color">Academic Year Student Entry</b> </h3>
+				  <h3 class="text-muted text-center" style="margin-top: -1rem"> <i class="fas fa-book-open fa-sm fa-fw mr-2" ></i> <b class="mu-color">Staff Entry</b> </h3>
 
               </div>
 <div >
 
-							<a  href="{% url 'KCHS:student_entry_template' %}" class="btn mu-bg mu-color pb-2" > <i class="fa fa-download" aria-hidden="true"></i> Entry Template</a>
+							<a  href="{% url 'KCHS:staff_entry_template' %}" class="btn mu-bg mu-color pb-2" > <i class="fa fa-download" aria-hidden="true"></i> Entry Template</a>
   </div>
 
 			</div>
@@ -72,7 +72,7 @@
 
 
 		<div class="panel panel-body" style="background-color: #d2d6de66;">
-<h4 class="text-center color-black" style="margin-left: -0.6rem;margin-top: 0rem;"><b class="color-black">Final Exam</b>
+<h4 class="text-center color-black" style="margin-left: -0.6rem;margin-top: 0rem;"><b class="color-black">Actions</b>
 						</h4>
 					<h4 class="text-justify color-black" ></h4>
 
@@ -83,7 +83,7 @@
 
 
 						<div>
-							<a class="btn mu-bg mu-color pb-2" href="#"  data-toggle="modal" data-target="#newTask"> <i class="fa fa-upload" aria-hidden="true"></i> Upload Student</a>
+							<a class="btn mu-bg mu-color pb-2" href="#"  data-toggle="modal" data-target="#newTask"> <i class="fa fa-upload" aria-hidden="true"></i> Upload Staff</a>
 							<div id="newTask" class="modal fade" role="dialog">
 								<div class="modal-dialog">
 
@@ -91,15 +91,15 @@
 								    <div class="modal-content">
 										<div class="modal-header mu-bg">
 											<button type="button" class="close" data-dismiss="modal">&times;</button>
-											<h4 class="modal-title text-center mu-color"> <b> {{subject}} {{event.event.name}} {{rank}}</b> </h4>
+											<h4 class="modal-title text-center mu-color"> <b> Import Staff Excell</b> </h4>
 										</div>
 										<div class="modal-body">
-											<form action="{% url 'KCHS:upload_student_entry' %}" method="POST" enctype="multipart/form-data">
+											<form action="{% url 'KCHS:upload_staff_entry' %}" method="POST" enctype="multipart/form-data">
 												{% csrf_token %}
 												<small class="text-danger"><b>Only accepts .CSV files</b></small>
 												<div class="form-group">
 													<div class="pt-3">
-														<label for="file1"> Upload {{subject}} file</label>
+														<label for="file1"> Upload Staff</label>
 														<input type="file" id="file1" name="excel_file" class="form-control" id="myFile">
 													</div>
 												</div>
@@ -138,7 +138,7 @@
 							<h5> <i class="fas fa-book-reader"></i> <b> <i></i></b></h5>
 						</div>
 						<div>
-							<h4 class="mu-color"> <b><u>Student Entry List</u></b></h4>
+							<h4 class="mu-color"> <b><u>Staff Entry List</u></b></h4>
 						</div>
 
 
@@ -149,12 +149,12 @@
 	                        <thead class="bg-light text-capitalize">
 	                            <tr>
 									<th>S/N</th>
-									<th>Reg#</th>
+									<th>username</th>
 									<th>Names</th>
 									<th>sex</th>
+									<th>email</th>
 									<th>Phone</th>
-									<th>Programme</th>
-									<th>Entry Level</th>
+									<th>Position</th>
 
 								</tr>
 	                        </thead>
@@ -162,12 +162,12 @@
 							<tr>
 								{% for z in registration %}
 								<td class="text-justify">{{forloop.counter}}</td>
-								<td class="text-justify">{{z.student.user}}</td>
-								<td class="text-justify">{{z.student.user.first_name|upper}} {{zstudent.user.middle_name|upper}} {{z.student.user.last_name|upper}}</td>
-								<td class="text-justify">{{z.student.user.sex}} </td>
-								<td class="text-justify ">{{z.student.user.phone}} </td>
-								<td class="text-justify mu-color"><b>{{z.student.programme}}</b> </td>
-								<td class="text-justify">{{z.student.entry_level}} </td>
+								<td class="text-justify">{{z.username}}</td>
+								<td class="text-justify">{{z.first_name|upper}} {{z.middle_name|upper}} {{z.last_name|upper}}</td>
+								<td class="text-justify">{{z.sex}} </td>
+								<td class="text-justify">{{z.email}} </td>
+								<td class="text-justify ">{{z.phone}} </td>
+								<td class="text-justify mu-color"><b>{{z.title}}</b> </td>
 
 							</tr>
 							{% endfor %}

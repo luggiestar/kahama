@@ -30,10 +30,6 @@ def student_entry_list(request):
 
 def staff_entry_list(request):
     get_registration = User.objects.all().exclude(id__in=User.objects.filter(title="student").values('id'))
-    # students=('staff','Accountant')
-    # get_registration = User.objects.filter(title__in=students)
-    # get_group = GroupAssessment.objects.all().values('group__id', 'group__description', 'group__name').distinct()
-    # get_item = GroupAssessment.objects.all().order_by('category')
 
     context = {
         'registration': get_registration,

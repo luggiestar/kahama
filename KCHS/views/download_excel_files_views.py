@@ -10,7 +10,7 @@ from django.template.defaultfilters import upper
 from xlsxwriter import Workbook
 
 from ..models import *
-
+# User = settings.AUTH_USER_MODEL
 
 def download_course_assessment_excel(request, assessment, course):
     get_group_assessment = GroupAssessment.objects.get(id=assessment)
@@ -350,6 +350,59 @@ def student_entry_template(request, ):
     return response
 
 
+def staff_entry_template(request, ):
+    get_semester = AcademicSemester.objects.get(is_active=True)
+
+    # content-type of response
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+    template_name = "staff" + str(get_semester.academic_year.year) + "_entry_template"
+    name = f"{template_name}.xlsx"
+    response['Content-Disposition'] = 'attachment; filename=' + name
+
+    # book = Workbook(response, {'in_memory': True})
+    # sheet = book.add_worksheet('sheet1')
+    #
+
+    # creating workbook
+    wb = Workbook(response, {'in_memory': True})
+
+    # adding sheet
+    ws = wb.add_worksheet("sheet1")
+    ws.set_column('A:A', 15)
+    ws.set_column('B:B', 15)
+    ws.set_column('C:C', 15)
+    ws.set_column('D:D', 15)
+    ws.set_column('E:E', 10)
+    ws.set_column('F:F', 15)
+    ws.set_column('G:G', 28)
+
+    # Sheet header, first row
+    row_num = 0
+    # Add a bold format to use to highlight cells.
+    bold = wb.add_format({'bold': 1, 'font_color': 'blue', 'font_name': 'Cambria'})
+
+    # bold.set_font_name('Times New Roman')
+    # font_style = xlwt.XFStyle()
+    # headers are bold
+    # font_style.font.bold = True
+
+    # column header names, you can use your own headers here
+    columns = ['First Name', 'Middle Name', 'Last Name','email', 'sex','phone', 'title']
+
+    # write column headers in sheet
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], bold)
+
+    # Sheet body, remaining rows
+    # font_style = xlwt.XFStyle()
+
+    # get your data, from database or from a text file...
+
+    wb.close()
+    return response
+
+
 def delete_course_assessment_result_data(request, assessment, course):
     get_group_assessment = GroupAssessment.objects.get(id=assessment)
     get_semester = AcademicSemester.objects.get(is_active=True)
@@ -491,6 +544,65 @@ def upload_student_entry(request):
         return redirect('KCHS:course_assessment_result')
 
 
+def upload_staff_entry(request):
+    get_semester = AcademicSemester.objects.get(is_active=True)
+
+    if "GET" == request.method:
+        return redirect('KCHS:staff_entry_list')
+    else:
+        excel_file = request.FILES['excel_file']
+
+        # you may put validations here to check extension or file size
+
+
+        wb = openpyxl.load_workbook(excel_file)
+
+        # getting a particular sheet by name out of many sheets
+        worksheet = wb.worksheets[0]
+        # print(worksheet)
+
+        # iterating over the rows and
+        # getting value from each cell in row
+        # try:
+
+        for rowno, rowval in enumerate(worksheet.iter_rows(min_row=1, max_row=worksheet.max_row), start=2):
+            # get_program = Programme.objects.get(name="CLINICAL MEDICINE")
+            # get_level = Level.objects.get(name=worksheet.cell(row=rowno, column=8).value)
+            get_username = f"{worksheet.cell(row=rowno, column=1).value}.{worksheet.cell(row=rowno, column=3).value}"
+            # create_email = f"{get_username}@kachs.ac.tz"
+            get_phone = f"0{worksheet.cell(row=rowno, column=6).value}"
+
+            # get_weight = (worksheet.cell(row=rowno, column=7).value / decimal.Decimal(100)) * decimal.Decimal(
+            #     get_group_assessment.weight)
+            try:
+
+                save_user = User(
+                    username=get_username,
+                    first_name=worksheet.cell(row=rowno, column=1).value,
+                    middle_name=worksheet.cell(row=rowno, column=2).value,
+                    last_name=worksheet.cell(row=rowno, column=3).value,
+                    sex=worksheet.cell(row=rowno, column=5).value,
+                    email=worksheet.cell(row=rowno, column=4).value,
+                    phone=get_phone,
+                    password=make_password(worksheet.cell(row=rowno, column=3).value),
+                    title=worksheet.cell(row=rowno, column=7).value,
+
+                )
+                save_user.save()
+
+
+                # messages.success(request, f"Successfully Uploaded")
+            except:
+                messages.success(request, f"Successfully Uploaded")
+
+# except:
+        #     messages.error(request, f"Failed, Please  Upload only required Data")
+        #     return redirect('KCHS:course_assessment_result', assessment=get_group_assessment.id,
+        #                     course=get_course.course)
+
+        return redirect('KCHS:staff_entry_list')
+
+
 def get_semester_payment_report(request, programme, level):
     get_pogramme = get_object_or_404(Programme, name=programme)
     get_level = get_object_or_404(Level, name=level)
@@ -614,7 +726,8 @@ def get_semester_unregistered_report(request):
 
     # get your data, from database or from a text file...
 
-    data = Registration.objects.filter(semester=get_semester, status__code="NOT PAID").order_by('student__programme','level')
+    data = Registration.objects.filter(semester=get_semester, status__code="NOT PAID").order_by('student__programme',
+                                                                                                'level')
     for my_row in data:
         get_name = f"{my_row.student.user.first_name} {my_row.student.user.middle_name} {my_row.student.user.last_name} "
         get_reg_number = f"{my_row.student.user}"

@@ -99,7 +99,7 @@
 					<a class="btn  col-xl-12  mu-color pb-2" href="{% url 'KCHS:download_course_assessment_excel' rank.id subject.course.code %}"  > <i class="fa fa-download" aria-hidden="true"></i> Download {{rank.item|lower}} Result</a>
 				</div>
 
-				{% if get_course_status < 1 and  rank.category == "CA" %}
+				{% if rank.category == "CA" %}
 				<div style="margin-top:0rem;margin-left:-2rem;">
 					<a class="btn  col-xl-12 pb-2 text-danger" href=""  data-toggle="modal" data-target="#deletesubject" > <i class="fa fa-trash" aria-hidden="true"></i> Delete {{rank.item|lower}} Result</a>
 				</div>

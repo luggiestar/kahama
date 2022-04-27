@@ -12,6 +12,8 @@ from django.http import request
 
 from .models import *
 
+User = settings.AUTH_USER_MODEL
+
 
 #
 @receiver(post_save, sender=SemesterAssessment, dispatch_uid='save_student_coursework')
@@ -54,39 +56,41 @@ def calculate_student_semester_ca(sender, instance, created, raw=False, **kwargs
 
 @receiver(post_save, sender=SemesterAssessment, dispatch_uid='save_student_end_of_semester')
 def calculate_student_semester_es(sender, instance, created, raw=False, **kwargs):
-    if created:
+    # if created:
 
-        get_group_assessment_ca = GroupAssessment.objects.filter(group=instance.assessment_group.group,
-                                                                 category="ES").count()
-        count_assessment = SemesterAssessment.objects.filter(registration=instance.registration,
-                                                             programme_course=instance.programme_course,
-                                                             academic_semester=instance.academic_semester,
-                                                             assessment_group__category="ES").count()
-        # print(count_assessment)
-        # print(get_group_assessment_ca)
-        if get_group_assessment_ca == count_assessment:
-            with transaction.atomic():
-                cards = SemesterAssessment.objects.select_for_update().filter(
+    get_group_assessment_ca = GroupAssessment.objects.filter(group=instance.assessment_group.group,
+                                                             category="ES").count()
+    count_assessment = SemesterAssessment.objects.filter(registration=instance.registration,
+                                                         programme_course=instance.programme_course,
+                                                         academic_semester=instance.academic_semester,
+                                                         assessment_group__category="ES").count()
+    print(count_assessment)
+    print(get_group_assessment_ca)
+    if get_group_assessment_ca == count_assessment:
+        with transaction.atomic():
+            cards = SemesterAssessment.objects.select_for_update().filter(
+                registration=instance.registration,
+                programme_course=instance.programme_course,
+                academic_semester=instance.academic_semester,
+                assessment_group__category="ES"
+            ).order_by('-weight')
+            if cards:
+
+                total_weight = 0
+
+                for mark in cards:
+                    total_weight = total_weight + mark.weight
+                    print(total_weight)
+
+                get_year_result = SemesterResult.objects.filter(
                     registration=instance.registration,
                     programme_course=instance.programme_course,
-                    academic_semester=instance.academic_semester,
-                    assessment_group__category="ES"
-                ).order_by('-weight')
-                if cards:
+                    academic_semester=instance.academic_semester
 
-                    total_weight = 0
-
-                    for mark in cards:
-                        total_weight = total_weight + mark.weight
-
-                    get_year_result = SemesterResult.objects.filter(
-                        registration=instance.registration,
-                        programme_course=instance.programme_course,
-                        academic_semester=instance.academic_semester
-
-                    ).first()
-                    get_year_result.es = decimal.Decimal(total_weight)
-                    get_year_result.save()
+                ).first()
+                get_year_result.es = decimal.Decimal(total_weight)
+                get_year_result.save()
+                print(get_year_result)
 
 
 @receiver(post_save, sender=Student, dispatch_uid='create_registration_of_new_user')
@@ -249,8 +253,6 @@ def check_full_payment(sender, instance, **kwargs):
         save_registration = Registration.objects.get(id=instance.registration.id)
         save_registration.status = get_status
         save_registration.save()
-
-
 
 #
 # @receiver(post_save, sender=Type, dispatch_uid='create_payment_structure')
